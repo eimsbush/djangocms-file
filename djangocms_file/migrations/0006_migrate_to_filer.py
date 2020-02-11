@@ -15,10 +15,11 @@ def migrate_to_filer(apps, schema_editor):
 
     for plugin in plugins:  # pragma: no cover
         if plugin.file:
+            filename = plugin.file.name.split('/')[-1]
             filesrc = File.objects.get_or_create(
                 file=plugin.file.file,
                 defaults={
-                    'name': plugin.file.name,
+                    'name': filename,
                 }
             )[0]
             plugins.filter(pk=plugin.pk).update(file_src=filesrc)
