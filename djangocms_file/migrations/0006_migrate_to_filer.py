@@ -24,12 +24,14 @@ def migrate_to_filer(apps, schema_editor):
                 file=plugin.file.file,
                 defaults={
                     'name': filename,
+                    'original_filename': filename,
                 }
             )[0]
             plugins.filter(pk=plugin.pk).update(file_src=filesrc)
             try:
                 os.remove(old_path)
-            except: pass
+            except:
+                print("Remove migrated {}".format(old_path))
 
 
 class Migration(migrations.Migration):
