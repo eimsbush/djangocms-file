@@ -14,6 +14,7 @@ def migrate_to_filer(apps, schema_editor):
     from filer.models import File
     FileInstance = apps.get_model('djangocms_file', 'File')
     plugins = FileInstance.objects.all()
+    remove_files = []
 
     for plugin in plugins:  # pragma: no cover
         if plugin.file:
@@ -28,10 +29,15 @@ def migrate_to_filer(apps, schema_editor):
                 }
             )[0]
             plugins.filter(pk=plugin.pk).update(file_src=filesrc)
-            try:
-                os.remove(old_path)
-            except:
-                print("Remove migrated {}".format(old_path))
+            remove_files.append(old_path)
+
+    for old_path in remove_files:
+        try:
+            os.remove(old_path)
+        except:
+            pass
+        else:
+            print("Remove migrated {}".format(old_path))
 
 
 class Migration(migrations.Migration):
