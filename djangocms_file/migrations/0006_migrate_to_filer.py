@@ -22,7 +22,7 @@ def migrate_to_filer(apps, schema_editor):
             old_path = os.path.join(settings.MEDIA_ROOT, str(plugin.file))
             print("Will use {} as filename.".format(filename))
             filesrc = File.objects.get_or_create(
-                file=plugin.file.file,
+                file=plugin.file,
                 defaults={
                     'name': filename,
                     'original_filename': filename,
