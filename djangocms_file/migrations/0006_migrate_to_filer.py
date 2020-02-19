@@ -33,7 +33,8 @@ def migrate_to_filer(apps, schema_editor):
             remove_files.append(old_path)
     remove_files = set(list(remove_files))
     if len(remove_files):
-        with tarfile.open(os.path.abspath(os.path.join(settings.MEDIA_ROOT, '../cms_page_media_file_backup.tar.gz', 'w:gz'))) as tar:
+        with tarfile.open(os.path.abspath(os.path.join(settings.MEDIA_ROOT, '../cms_page_media_file_backup.tar.gz')),
+                          'w:gz') as tar:
             for old_path in remove_files:
                 tar.add(old_path, recursive=False)
                 try:
@@ -42,7 +43,6 @@ def migrate_to_filer(apps, schema_editor):
                     pass
                 else:
                     print("Remove migrated {}".format(old_path))
-
 
 
 class Migration(migrations.Migration):
